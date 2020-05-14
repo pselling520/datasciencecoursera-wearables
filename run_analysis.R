@@ -1,6 +1,7 @@
 #Initial library load
 library(RCurl)
 library(dplyr)
+library(colr)
 
 #Loading in data
 destfile <- ".\\UCI_Data.zip"
@@ -17,7 +18,6 @@ activity <- read.table(".\\UCI HAR Dataset\\activity_labels.txt")
 train_subjects <- read.table(".\\UCI HAR Dataset\\train\\subject_train.txt")
 test_subjects <- read.table(".\\UCI HAR Dataset\\test\\subject_test.txt")
 
-
 #Add feature names to dataset and add id column
 features <- as.vector(features[,2])
 colnames(X_train) <- features
@@ -26,6 +26,10 @@ colnames(train_subjects) <- c("id")
 colnames(test_subjects) <- c("id")
 colnames(y_train) <- c("activity")
 colnames(y_test) <- c("activity")
+
+#Restricting to mean and std
+X_train <-cgrep(X_train, "mean\\(|std\\(")
+X_test <- cgrep(X_test, "mean\\(|std\\(")
 
 #Converting activities into activity descriptors
 y_train <- mutate(y_train, activity = ifelse(y_train$activity==1, "WALKING",
@@ -55,11 +59,10 @@ all_data <- union(train, test)
 all_data$id <- as.factor(all_data$id)
 all_data$activity <- as.factor(all_data$activity)
 
-summarized_data <- aggregate(all_data[, 2:562],
+summarized_data <- aggregate(all_data[, 2:67],
                              by=list(id=all_data$id, activity = all_data$activity),
                              mean)
 
 summarized_data <- summarized_data[order(summarized_data$id, summarized_data$activity),]
-row.names(summarized_data) <- NULL
 
-write.csv(summarized_data, file=".\\tidy_wearables_averages.csv")
+write.table(summarized_data, file=".\\tidy_wearables_averages.txt",row.names = FALSE)
