@@ -10,8 +10,7 @@ A full description of the dataset can be found here: http://archive.ics.uci.edu/
 The run_analysis file does the following:
 * Downloads the zip file and unzips the zip file to a local directory
 * Imports all training and test data, along with the activity labels and variable labels
-* Merges all data together, assigns variable names to the columns, and updates the outcomes to show the activity descriptor rather than the numeric value
-** This only contains the means and standard deviations for each variable
+* Merges all data together, assigns variable names to the columns, and updates the outcomes to show the activity descriptor rather than the numeric value (This only contains the means and standard deviations for each variable)
 * Extracts a subset of the data containing the average of each variable for each activity for each subject
 * Writes the tidy dataset to a txt file
 
