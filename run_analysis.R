@@ -24,6 +24,22 @@ colnames(X_train) <- features
 colnames(X_test) <- features
 colnames(train_subjects) <- c("id")
 colnames(test_subjects) <- c("id")
+colnames(y_train) <- c("activity")
+colnames(y_test) <- c("activity")
+
+#Converting activities into activity descriptors
+y_train <- mutate(y_train, activity = ifelse(y_train$activity==1, "WALKING",
+                                               if_else(y_train$activity==2,"WALKING_UPSTAIRS",
+                                                       if_else(y_train$activity==3, "WALKING_DOWNSTAIRS",
+                                                               if_else(y_train$activity==4, "SITTING",
+                                                                       if_else(y_train$activity==5,"STANDING","LAYING"))))))
+y_test <- mutate(y_test, activity = ifelse(y_test$activity==1, "WALKING",
+                                               if_else(y_test$activity==2,"WALKING_UPSTAIRS",
+                                                       if_else(y_test$activity==3, "WALKING_DOWNSTAIRS",
+                                                               if_else(y_test$activity==4, "SITTING",
+                                                                       if_else(y_test$activity==5,"STANDING","LAYING"))))))
+
+
 
 #join IDs to datasets and pull in all values
 x_id_train <- cbind(train_subjects, X_train)
@@ -34,5 +50,16 @@ test <- cbind(x_id_test, y_test)
 #merge train and test together
 all_data <- union(train, test)
 
-#update activity id with descriptor
-#test update
+#Creates the second, independent tidy data set with the average of 
+#each variable for each activity and each subject.
+all_data$id <- as.factor(all_data$id)
+all_data$activity <- as.factor(all_data$activity)
+
+summarized_data <- aggregate(all_data[, 2:562],
+                             by=list(id=all_data$id, activity = all_data$activity),
+                             mean)
+
+summarized_data <- summarized_data[order(summarized_data$id, summarized_data$activity),]
+row.names(summarized_data) <- NULL
+
+write.csv(summarized_data, file=".\\tidy_wearables_averages.csv")
