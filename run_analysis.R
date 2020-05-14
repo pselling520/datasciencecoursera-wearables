@@ -6,7 +6,7 @@ library(colr)
 #Loading in data
 destfile <- ".\\UCI_Data.zip"
 URL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-file <- download.file(URL,method="curl")
+file <- download.file(URL,destfile,method="curl")
 unzip(destfile)
 
 X_train <- read.table(".\\UCI HAR Dataset\\train\\X_train.txt", header=FALSE)
