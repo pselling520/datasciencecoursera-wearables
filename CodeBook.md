@@ -1,3 +1,15 @@
+Variables:
+X_train, X_test, y_train, y_test, features, activity, train_subjects, and test_subjects contain the data loaded in from the source data.
+
+x_id_train and x_id_test contain the X data with the subject ids appended to the data set.
+
+train and test contain the merged variables and outcomes for the training data and the test data.
+
+all_data contains the merged training and test data
+
+summarized_data contains the tidy data set
+
+
 Feature Selection:
 
 The features selected for this database come from the dataset referenced in the README.md file (citation at bottom).
